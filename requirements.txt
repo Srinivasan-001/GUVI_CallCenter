@@ -1,8 +1,7 @@
 fastapi
-uvicorn
-openai
-whisper
-torch
+uvicorn[standard]
 pydantic
+openai
+anthropic
+openai-whisper
 python-multipart
-ffmpeg-python

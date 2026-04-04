@@ -6,7 +6,6 @@ import re
 import logging
 from contextlib import asynccontextmanager
 
-import whisper
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
@@ -29,17 +28,7 @@ LLM_MODEL       = os.environ.get("LLM_MODEL", "meta-llama/llama-3-70b-instruct")
 # ---------------------------------------------------------------------------
 # Whisper Load
 # ---------------------------------------------------------------------------
-whisper_model = None
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    global whisper_model
-    log.info("Loading Whisper model...")
-    whisper_model = whisper.load_model(WHISPER_MODEL)
-    yield
-    log.info("Shutdown")
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 # ---------------------------------------------------------------------------
 # Request Schema
@@ -73,13 +62,19 @@ def decode_audio(audio_b64: str) -> str:
 LANGUAGE_CODE = {"Tamil": "ta", "Hindi": "hi"}
 
 def transcribe(audio_path: str, language: str) -> str:
-    result = whisper_model.transcribe(
-        audio_path,
-        language=LANGUAGE_CODE[language],
-        temperature=0.0,
-        initial_prompt="Call center conversation with English mix"
+    client = OpenAI(
+        api_key=os.getenv("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"),
+        base_url="https://api.groq.com/openai/v1"
     )
-    return result.get("text", "").strip()
+
+    with open(audio_path, "rb") as f:
+        response = client.audio.transcriptions.create(
+            file=f,
+            model="whisper-large-v3"
+        )
+
+    return response.text.strip()
+
 
 # ---------------------------------------------------------------------------
 # Detect Native Script

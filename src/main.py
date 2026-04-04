@@ -63,7 +63,7 @@ LANGUAGE_CODE = {"Tamil": "ta", "Hindi": "hi"}
 
 def transcribe(audio_path: str, language: str) -> str:
     client = OpenAI(
-        api_key=os.getenv("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"),
+        api_key=os.getenv("GROQ_API_KEY"),
         base_url="https://api.groq.com/openai/v1"
     )
 

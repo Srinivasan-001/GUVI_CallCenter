@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 # Config
 # ---------------------------------------------------------------------------
 API_KEY         = os.environ.get("X_API_KEY", "sk_track3_987654321")
-OPENAI_API_KEY  = os.environ.get("OPENAI_API_KEY", "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")
+OPENAI_API_KEY  = os.environ.get("OPENAI_API_KEY", "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")
 WHISPER_MODEL   = os.environ.get("WHISPER_MODEL_SIZE", "large-v3")
 LLM_MODEL       = os.environ.get("LLM_MODEL", "meta-llama/llama-3-70b-instruct")
 
